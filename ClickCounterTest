@@ -1,0 +1,42 @@
+public class ClickCounterTest {
+
+    public static void main(String[] args) {
+
+        // Set the path to the ChromeDriver executable
+      System.setProperty("webdriver.chrome.driver", "C:\\Users\\HP\\AppData\\Local\\Temp\\e568842b-6702-475d-bfd0-d098becb6595_chromedriver-win32 (2).zip.595\\chromedriver-win32\\chromedriver.exe");
+
+        // Launch Chrome Browser
+        WebDriver driver = new ChromeDriver();
+
+        // Navigate to the Click Counter page
+        driver.get("https://qaclickcounter.ccbp.tech/");
+
+        // Find the "Click Me!" button
+        WebElement clickButton = driver.findElement(By.xpath("//button[contains(text(), 'Click Me!')]"));
+
+        // Find the count span element
+        WebElement counter = driver.findElement(By.xpath("//span[contains(@class, 'counter')]"));
+
+        for (int i = 1; i <= 100; i++) {
+
+            // Click the "Click Me!" button
+            clickButton.click();
+
+            // Get the text from count span element
+            String countStr = counter.getText();
+            int count = Integer.parseInt(countStr);
+
+            if (count != i) {
+                System.out.println("Count Mismatch");
+                break;
+            }
+            if(i == 100) {
+                System.out.println("Click Counter App: Working as expected");
+            }
+        }
+
+        // Quit the WebDriver instance
+        driver.quit();
+
+    }
+}
