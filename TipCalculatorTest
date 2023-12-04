@@ -1,0 +1,89 @@
+           TipCalculatorTest     
+          
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class TipCalculatorTest {
+   public static void main(String[] args){
+
+       System.setProperty("webdriver.chrome.driver","C:\\Users\\HP\\AppData\\Local\\Temp\\e568842b-6702-475d-bfd0-d098becb6595_chromedriver-win32 (2).zip.595\\chromedriver-win32\\chromedriver.exe");        WebDriver driver = new ChromeDriver();
+
+       driver.get("https://qatipcalc.ccbp.tech/");
+
+       //testing the tip calculation
+
+       WebElement billAmountEl = driver.findElement(By.cssSelector("input[id ^= 'bill']"));
+       WebElement percentageTipEl = driver.findElement(By.cssSelector("input[id ^= 'percent']"));
+       WebElement tipAmountEl = driver.findElement(By.cssSelector("p[id ^= 'tip']"));
+       WebElement totalEl = driver.findElement(By.cssSelector("p[id ^= 'total']"));
+       WebElement calculateBtnEl = driver.findElement(By.cssSelector("button[ id ^= 'calculate']"));
+
+       billAmountEl.sendKeys("1000");
+       percentageTipEl.sendKeys("12");
+
+       calculateBtnEl.click();
+
+       String expectedTipAmount = "120.00";
+       String expectedTotalAmount = "1120.00";
+
+       String currTipAmount = tipAmountEl.getText();
+       String currTotalAmount = totalEl.getText();
+
+       if(currTipAmount.equals(expectedTipAmount) && currTotalAmount.equals(expectedTotalAmount)){
+           System.out.println("Tip Calculated Correctly.");
+       }else{
+           System.out.println("Tip Calculated Incorrectly");
+       }
+
+       //Testing the display of error message for no inputs.
+
+       percentageTipEl.clear();
+       calculateBtnEl.click();
+
+       WebElement errorMsgEl = driver.findElement(By.cssSelector("p[id ^= 'error']"));
+
+       String expectedErrMsg = "Please Enter a Valid Input.";
+
+       String currErrMsg = errorMsgEl.getText();
+
+       if(currErrMsg.equals(expectedErrMsg)){
+           System.out.println("Error message displayed for no input.");
+       }else{
+           System.out.println("Error message missing for no input.");
+       }
+
+       //Testing the display of error message for invalid inputs.
+
+       percentageTipEl.sendKeys("10f");
+       calculateBtnEl.click();
+
+       currErrMsg = errorMsgEl.getText();
+
+       if(currErrMsg.equals(expectedErrMsg)){
+           System.out.println("Error message displayed for invalid input.");
+       }else{
+           System.out.println("Error message missing for invalid input.");
+       }
+
+       driver.quit();
+
+
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
